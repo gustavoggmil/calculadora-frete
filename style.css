@@ -8,14 +8,16 @@
 
 /* Permitir rolagem normal */
 html {
-    scroll-behavior: smooth; /* Suaviza a rolagem */
+    scroll-behavior: smooth;
 }
 
 body {
     background-color: #f4f4f4;
     min-height: 100vh;
-    overflow-y: auto;
-    display: block; /* Evita que o conteúdo fique preso */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
 /* Caixa principal */
@@ -26,9 +28,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     width: 100%;
-    margin: 20px auto; /* Mantém alinhado */
-    position: relative; /* Permite ajustes no scroll */
-    overflow-y: auto; /* Caso precise de rolagem interna */
+    overflow-y: auto;
 }
 
 /* Cabeçalho */
@@ -54,6 +54,12 @@ input {
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #28a745;
+    outline: none;
 }
 
 /* Botão principal */
