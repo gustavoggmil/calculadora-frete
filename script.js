@@ -1,84 +1,74 @@
-const { jsPDF } = window.jspdf;
-
-document.getElementById("form-frete").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    // Coleta os valores dos inputs
+document.getElementById("calcular").addEventListener("click", function() {
+    // Coleta dos dados do formulário
     const origem = document.getElementById("origem").value;
     const destino = document.getElementById("destino").value;
-    const distancia = parseFloat(document.getElementById("distancia").value);
+    const km = parseFloat(document.getElementById("distancia").value);
     const eixos = parseInt(document.getElementById("eixos").value);
     const pedagio = parseFloat(document.getElementById("pedagio").value);
     const icms = parseFloat(document.getElementById("icms").value);
-    const taxaFederal = parseFloat(document.getElementById("taxa-federal").value);
-    const kmPorLitro = parseFloat(document.getElementById("km-por-litro").value);
-    const precoCombustivel = parseFloat(document.getElementById("preco-combustivel").value);
-    const pesoCarga = parseFloat(document.getElementById("peso-carga").value);
-    const custosAdicionais = parseFloat(document.getElementById("custos-adicionais").value);
+    const taxa_federal = parseFloat(document.getElementById("taxa-federal").value);
+    const km_por_litro = parseFloat(document.getElementById("km-por-litro").value);
+    const preco_combustivel = parseFloat(document.getElementById("preco-combustivel").value);
+    const peso_carga = parseFloat(document.getElementById("peso-carga").value);
+    const custos_adicionais = parseFloat(document.getElementById("custos-adicionais").value);
     const lucro = parseFloat(document.getElementById("lucro").value);
 
-    // Chama a função de cálculo
-    const resultado = calcularFrete(distancia, eixos, pedagio, icms, taxaFederal, kmPorLitro, precoCombustivel, pesoCarga, custosAdicionais, lucro);
+    // Função de cálculo do frete
+    const calcularFrete = (km, eixos, pedagio, icms, taxa_federal, km_por_litro, preco_combustivel, peso_carga, custos_adicionais, lucro) => {
+        const seguro_carga = 350.00;
+        const desembarque = 1500.00;
+        const pancard_vale_pedagio = 260.00;
+        const buonny_cadastro_motorista = 60.00;
 
-    // Gera o PDF
-    gerarRelatorio(origem, destino, distancia, eixos, pedagio, icms, taxaFederal, kmPorLitro, precoCombustivel, pesoCarga, custosAdicionais, lucro, resultado);
-});
+        const consumo_combustivel = km / km_por_litro;
+        const custo_combustivel = consumo_combustivel * preco_combustivel;
+        const taxa_peso = peso_carga * 0.05;  // Exemplo de taxa baseada no peso da carga
 
-function calcularFrete(km, eixos, pedagio, icms, taxaFederal, kmPorLitro, precoCombustivel, pesoCarga, custosAdicionais, lucro) {
-    const seguroCarga = 350.00;
-    const desembarque = 1500.00;
-    const pancardValePedagio = 260.00;
-    const buonnyCadastroMotorista = 60.00;
+        const custo_total = (
+            seguro_carga + desembarque + pancard_vale_pedagio + buonny_cadastro_motorista +
+            custo_combustivel + pedagio + custos_adicionais + taxa_peso
+        );
 
-    const consumoCombustivel = km / kmPorLitro;
-    const custoCombustivel = consumoCombustivel * precoCombustivel;
+        const valor_icms = custo_total * (icms / 100);
+        const valor_taxa_federal = custo_total * (taxa_federal / 100);
+        const custo_total_com_impostos = custo_total + valor_icms + valor_taxa_federal;
 
-    const taxaPeso = pesoCarga * 0.05;
+        const valor_frete = custo_total_com_impostos * (1 + lucro / 100);
+        const lucro_liquido = valor_frete - custo_total_com_impostos;
 
-    const custoTotal = seguroCarga + desembarque + pancardValePedagio + buonnyCadastroMotorista + custoCombustivel + pedagio + custosAdicionais + taxaPeso;
+        return { valor_frete, custo_total_com_impostos, custo_combustivel, consumo_combustivel, lucro_liquido };
+    };
 
-    const valorICMS = custoTotal * (icms / 100);
-    const valorTaxaFederal = custoTotal * (taxaFederal / 100);
-    const custoTotalComImpostos = custoTotal + valorICMS + valorTaxaFederal;
+    const { valor_frete, custo_total_com_impostos, custo_combustivel, consumo_combustivel, lucro_liquido } = calcularFrete(
+        km, eixos, pedagio, icms, taxa_federal, km_por_litro, preco_combustivel, peso_carga, custos_adicionais, lucro
+    );
 
-    const valorFrete = custoTotalComImpostos * (1 + lucro / 100);
-    const lucroLiquido = valorFrete - custoTotalComImpostos;
-
-    return { valorFrete, custoTotalComImpostos, custoCombustivel, consumoCombustivel, lucroLiquido };
-}
-
-function gerarRelatorio(origem, destino, km, eixos, pedagio, icms, taxaFederal, kmPorLitro, precoCombustivel, pesoCarga, custosAdicionais, lucro, resultado) {
-    const { valorFrete, custoTotalComImpostos, custoCombustivel, consumoCombustivel, lucroLiquido } = resultado;
-
+    // Gerar o PDF com o jsPDF
+    const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.setFont("Arial", "B", 16);
-    doc.text("MMB Transportes LTDA", 105, 20, null, null, "center");
-    doc.text("RELATÓRIO DE COTAÇÃO DE FRETE", 105, 30, null, null, "center");
 
-    const tabelaDados = [
-        ["Origem", origem],
-        ["Destino", destino],
-        ["Distância (km)", km],
-        ["Número de Eixos", eixos],
-        ["Pedágio (R$)", pedagio],
-        ["ICMS (%)", icms],
-        ["Taxa Federal (%)", taxaFederal],
-        ["Consumo Médio (km/L)", kmPorLitro],
-        ["Preço do Combustível (R$)", precoCombustivel],
-        ["Peso da Carga (kg)", pesoCarga],
-        ["Custos Adicionais (R$)", custosAdicionais],
-        ["Margem de Lucro (%)", lucro],
-        ["Consumo de Combustível (L)", consumoCombustivel],
-        ["Custo Total (R$)", custoTotalComImpostos],
-        ["Valor do Frete (R$)", valorFrete],
-        ["Lucro Líquido (R$)", lucroLiquido]
-    ];
+    doc.setFontSize(16);
+    doc.text("MMB Transportes LTDA", 105, 10, null, null, "center");
+    doc.text("RELATÓRIO DE COTAÇÃO DE FRETE", 105, 20, null, null, "center");
 
-    doc.autoTable({
-        head: [["Descrição", "Valor"]],
-        body: tabelaDados,
-        startY: 40
-    });
+    doc.setFontSize(12);
+    doc.text(`Origem: ${origem}`, 10, 30);
+    doc.text(`Destino: ${destino}`, 10, 40);
+    doc.text(`Distância (km): ${km}`, 10, 50);
+    doc.text(`Número de Eixos: ${eixos}`, 10, 60);
+    doc.text(`Pedágio (R$): ${pedagio.toFixed(2)}`, 10, 70);
+    doc.text(`ICMS (%): ${icms}`, 10, 80);
+    doc.text(`Taxa Federal (%): ${taxa_federal}`, 10, 90);
+    doc.text(`Consumo Médio (km/L): ${km_por_litro}`, 10, 100);
+    doc.text(`Preço do Combustível (R$): ${preco_combustivel.toFixed(2)}`, 10, 110);
+    doc.text(`Peso da Carga (kg): ${peso_carga}`, 10, 120);
+    doc.text(`Custos Adicionais (R$): ${custos_adicionais.toFixed(2)}`, 10, 130);
+    doc.text(`Margem de Lucro (%): ${lucro}`, 10, 140);
 
-    doc.save(`cotacao_frete_${origem}_${destino}.pdf`);
-}
+    doc.text(`Custo Total (R$): ${custo_total_com_impostos.toFixed(2)}`, 10, 150);
+    doc.text(`Valor do Frete (R$): ${valor_frete.toFixed(2)}`, 10, 160);
+    doc.text(`Lucro Líquido (R$): ${lucro_liquido.toFixed(2)}`, 10, 170);
+
+    doc.save("relatorio_frete.pdf");
+
+});
