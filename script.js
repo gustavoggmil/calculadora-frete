@@ -1,26 +1,16 @@
-document.getElementById("freteForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    console.log("Formulário enviado! Calculando...");
-
+function calcularFrete() {
     let origem = document.getElementById("origem").value;
     let destino = document.getElementById("destino").value;
     let km = parseFloat(document.getElementById("distancia").value);
     let eixos = parseInt(document.getElementById("eixos").value);
     let pedagio = parseFloat(document.getElementById("pedagio").value);
-    let icms = parseFloat(document.getElementById("icms").value);
-    let taxaFederal = parseFloat(document.getElementById("taxaFederal").value);
+    let icms = parseFloat(document.getElementById("icms").value) / 100;
+    let taxaFederal = parseFloat(document.getElementById("taxaFederal").value) / 100;
     let kmPorLitro = parseFloat(document.getElementById("kmPorLitro").value);
     let precoCombustivel = parseFloat(document.getElementById("precoCombustivel").value);
     let pesoCarga = parseFloat(document.getElementById("pesoCarga").value);
     let custosAdicionais = parseFloat(document.getElementById("custosAdicionais").value);
-    let lucro = parseFloat(document.getElementById("lucro").value);
-
-    if (isNaN(km) || isNaN(eixos) || isNaN(pedagio) || isNaN(icms) || isNaN(taxaFederal) ||
-        isNaN(kmPorLitro) || isNaN(precoCombustivel) || isNaN(pesoCarga) || isNaN(custosAdicionais) || isNaN(lucro)) {
-        alert("Por favor, preencha todos os campos corretamente!");
-        return;
-    }
+    let lucro = parseFloat(document.getElementById("lucro").value) / 100;
 
     let seguroCarga = 350.00;
     let desembarque = 1500.00;
@@ -32,44 +22,33 @@ document.getElementById("freteForm").addEventListener("submit", function(event) 
     let taxaPeso = pesoCarga * 0.05;
 
     let custoTotal = seguroCarga + desembarque + pancardValePedagio + buonnyCadastroMotorista +
-                     custoCombustivel + pedagio + custosAdicionais + taxaPeso;
+        custoCombustivel + pedagio + custosAdicionais + taxaPeso;
 
-    let valorICMS = custoTotal * (icms / 100);
-    let valorTaxaFederal = custoTotal * (taxaFederal / 100);
+    let valorICMS = custoTotal * icms;
+    let valorTaxaFederal = custoTotal * taxaFederal;
     let custoTotalComImpostos = custoTotal + valorICMS + valorTaxaFederal;
-
-    let valorFrete = custoTotalComImpostos * (1 + lucro / 100);
+    let valorFrete = custoTotalComImpostos * (1 + lucro);
     let lucroLiquido = valorFrete - custoTotalComImpostos;
 
-    console.log("Cálculo concluído!");
-
     document.getElementById("resultado").innerHTML = `
+        <p><strong>Origem:</strong> ${origem}</p>
+        <p><strong>Destino:</strong> ${destino}</p>
         <p><strong>Valor do Frete:</strong> R$ ${valorFrete.toFixed(2)}</p>
-        <p><strong>Custo Total com Impostos:</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
-        <p><strong>Custo com Combustível:</strong> R$ ${custoCombustivel.toFixed(2)}</p>
-        <p><strong>Consumo de Combustível:</strong> ${consumoCombustivel.toFixed(2)} Litros</p>
+        <p><strong>Custo Total:</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
+        <p><strong>Consumo de Combustível:</strong> ${consumoCombustivel.toFixed(2)} L</p>
         <p><strong>Lucro Líquido:</strong> R$ ${lucroLiquido.toFixed(2)}</p>
     `;
 
     document.getElementById("gerarPdf").style.display = "block";
+}
 
-    document.getElementById("gerarPdf").onclick = function() {
-        gerarPDF(origem, destino, valorFrete, custoTotalComImpostos, custoCombustivel, consumoCombustivel, lucroLiquido);
-    };
-});
-
-function gerarPDF(origem, destino, valorFrete, custoTotal, custoCombustivel, consumoCombustivel, lucroLiquido) {
-    const { jsPDF } = window.jspdf;
-    let doc = new jsPDF();
-
-    doc.text("MMB Transportes - Relatório de Frete", 10, 10);
-    doc.text(`Origem: ${origem}`, 10, 20);
-    doc.text(`Destino: ${destino}`, 10, 30);
-    doc.text(`Valor do Frete: R$ ${valorFrete.toFixed(2)}`, 10, 40);
-    doc.text(`Custo Total: R$ ${custoTotal.toFixed(2)}`, 10, 50);
-    doc.text(`Combustível: R$ ${custoCombustivel.toFixed(2)}`, 10, 60);
-    doc.text(`Consumo: ${consumoCombustivel.toFixed(2)}L`, 10, 70);
-    doc.text(`Lucro: R$ ${lucroLiquido.toFixed(2)}`, 10, 80);
+function gerarPDF() {
+    let resultado = document.getElementById("resultado").innerHTML;
+    let pdf = new window.jspdf.jsPDF();
     
-    doc.save("frete.pdf");
+    pdf.text("MMB Transportes LTDA", 10, 10);
+    pdf.text("Relatório de Cotação de Frete", 10, 20);
+    pdf.text(resultado.replace(/<[^>]*>/g, ""), 10, 30); // Remove tags HTML
+    
+    pdf.save("cotacao_frete.pdf");
 }
