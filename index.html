@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete - MMB Transportes</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -17,7 +18,7 @@
             <input type="text" id="destino" required>
 
             <label>Distância (km):</label>
-            <input type="number" id="distancia" required>
+            <input type="number" id="distancia" step="0.01" required>
 
             <label>Número de Eixos:</label>
             <input type="number" id="eixos" required>
