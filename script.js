@@ -13,6 +13,16 @@ document.getElementById("calcular").addEventListener("click", function() {
     const custos_adicionais = parseFloat(document.getElementById("custos-adicionais").value);
     const lucro = parseFloat(document.getElementById("lucro").value);
 
+    // Verificar se todos os campos foram preenchidos
+    if (
+        isNaN(km) || isNaN(eixos) || isNaN(pedagio) || isNaN(icms) || isNaN(taxa_federal) || 
+        isNaN(km_por_litro) || isNaN(preco_combustivel) || isNaN(peso_carga) || 
+        isNaN(custos_adicionais) || isNaN(lucro) || origem === "" || destino === ""
+    ) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
     // Função de cálculo do frete
     const calcularFrete = (km, eixos, pedagio, icms, taxa_federal, km_por_litro, preco_combustivel, peso_carga, custos_adicionais, lucro) => {
         const seguro_carga = 350.00;
@@ -43,6 +53,27 @@ document.getElementById("calcular").addEventListener("click", function() {
         km, eixos, pedagio, icms, taxa_federal, km_por_litro, preco_combustivel, peso_carga, custos_adicionais, lucro
     );
 
+    // Exibir resultado no HTML (relatório)
+    const relatorioDiv = document.getElementById("relatorio");
+    relatorioDiv.innerHTML = `
+        <h3>Relatório de Cálculo de Frete</h3>
+        <p><strong>Origem:</strong> ${origem}</p>
+        <p><strong>Destino:</strong> ${destino}</p>
+        <p><strong>Distância (km):</strong> ${km}</p>
+        <p><strong>Número de Eixos:</strong> ${eixos}</p>
+        <p><strong>Pedágio (R$):</strong> ${pedagio.toFixed(2)}</p>
+        <p><strong>ICMS (%):</strong> ${icms}</p>
+        <p><strong>Taxa Federal (%):</strong> ${taxa_federal}</p>
+        <p><strong>Consumo Médio (km/L):</strong> ${km_por_litro}</p>
+        <p><strong>Preço do Combustível (R$):</strong> ${preco_combustivel.toFixed(2)}</p>
+        <p><strong>Peso da Carga (kg):</strong> ${peso_carga}</p>
+        <p><strong>Custos Adicionais (R$):</strong> ${custos_adicionais.toFixed(2)}</p>
+        <p><strong>Margem de Lucro (%):</strong> ${lucro}</p>
+        <p><strong>Custo Total (R$):</strong> ${custo_total_com_impostos.toFixed(2)}</p>
+        <p><strong>Valor do Frete (R$):</strong> ${valor_frete.toFixed(2)}</p>
+        <p><strong>Lucro Líquido (R$):</strong> ${lucro_liquido.toFixed(2)}</p>
+    `;
+
     // Gerar o PDF com o jsPDF
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -70,5 +101,4 @@ document.getElementById("calcular").addEventListener("click", function() {
     doc.text(`Lucro Líquido (R$): ${lucro_liquido.toFixed(2)}`, 10, 170);
 
     doc.save("relatorio_frete.pdf");
-
 });
