@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("freteForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        calcularFrete();
-    });
+    document.getElementById("calcularFrete").addEventListener("click", calcularFrete);
+    document.getElementById("gerarPdf").addEventListener("click", gerarPDF);
 });
 
 function calcularFrete() {
@@ -52,7 +50,6 @@ function calcularFrete() {
         <p><strong>Destino:</strong> ${destino}</p>
         <p><strong>Valor do Frete:</strong> R$ ${valorFrete.toFixed(2)}</p>
         <p><strong>Custo Total:</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
-        <p><strong>Consumo de Combustível:</strong> ${consumoCombustivel.toFixed(2)} L</p>
         <p><strong>Lucro Líquido:</strong> R$ ${lucroLiquido.toFixed(2)}</p>
     `;
 
@@ -61,19 +58,11 @@ function calcularFrete() {
 
 function gerarPDF() {
     console.log("Gerando PDF...");
-
+    
+    let pdf = new window.jspdf.jsPDF();
     let resultado = document.getElementById("resultado").innerText;
 
-    if (!resultado) {
-        alert("Calcule o frete antes de gerar o PDF!");
-        return;
-    }
-
-    let pdf = new window.jspdf.jsPDF();
-    
-    pdf.text("MMB Transportes LTDA", 10, 10);
-    pdf.text("Relatório de Cotação de Frete", 10, 20);
-    pdf.text(resultado, 10, 30);
-
+    pdf.text("MMB Transportes - Cotação de Frete", 10, 10);
+    pdf.text(resultado, 10, 20);
     pdf.save("cotacao_frete.pdf");
 }
