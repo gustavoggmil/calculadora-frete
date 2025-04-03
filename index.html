@@ -2,16 +2,28 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <h1>Calculadora de Frete</h1>
-    <input type="number" id="peso" placeholder="Peso em kg">
-    <input type="number" id="distancia" placeholder="Distância em km">
+    <h2>Calculadora de Frete</h2>
+
+    <label>Origem: <input type="text" id="origem"></label><br>
+    <label>Destino: <input type="text" id="destino"></label><br>
+    <label>Distância (km): <input type="number" id="distancia"></label><br>
+    <label>Número de Eixos: <input type="number" id="eixos"></label><br>
+    <label>Pedágio (R$): <input type="number" id="pedagio"></label><br>
+    <label>ICMS (%): <input type="number" id="icms"></label><br>
+    <label>Taxa Federal (%): <input type="number" id="taxaFederal"></label><br>
+    <label>Consumo Médio (km/L): <input type="number" id="kmPorLitro"></label><br>
+    <label>Preço do Combustível (R$): <input type="number" id="precoCombustivel"></label><br>
+    <label>Peso da Carga (kg): <input type="number" id="pesoCarga"></label><br>
+    <label>Custos Adicionais (R$): <input type="number" id="custosAdicionais"></label><br>
+    <label>Lucro (%): <input type="number" id="lucro"></label><br>
+
     <button onclick="calcularFrete()">Calcular</button>
-    <p id="resultado"></p>
+    <div id="resultado"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
