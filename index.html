@@ -4,29 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Calculadora de Frete</h1>
         <label for="distancia">Distância (km):</label>
-        <input type="number" id="distancia" placeholder="Digite a distância">
-
-        <label for="consumo">Consumo Médio (km/L):</label>
-        <input type="number" id="consumo" step="0.01" placeholder="Digite o consumo médio">
-
-        <label for="precoCombustivel">Preço do Combustível (R$/L):</label>
-        <input type="number" id="precoCombustivel" step="0.01" placeholder="Digite o preço do combustível">
-
-        <label for="custoKm">Custo por KM (R$):</label>
-        <input type="number" id="custoKm" step="0.01" placeholder="Digite o custo por km">
-
-        <button onclick="calcularFrete()">Calcular Frete</button>
-        <p id="resultado"></p>
+        <input type="number" id="distancia" step="0.1" required>
         
-        <button onclick="gerarPDF()">Gerar PDF</button>
+        <label for="consumo">Consumo Médio (km/L):</label>
+        <input type="number" id="consumo" step="0.1" required>
+        
+        <label for="preco">Preço do Combustível (R$/L):</label>
+        <input type="number" id="preco" step="0.01" required>
+        
+        <button id="calcular">Calcular Frete</button>
+        <button id="gerarPDF">Gerar PDF</button>
+        
+        <p id="resultado"></p>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("calcular").addEventListener("click", calcularFrete);
+            document.getElementById("gerarPDF").addEventListener("click", gerarPDF);
+        });
+
+        function calcularFrete() {
+            let distancia = parseFloat(document.getElementById("distancia").value);
+            let consumo = parseFloat(document.getElementById("consumo").value);
+            let preco = parseFloat(document.getElementById("preco").value);
+            
+            if (isNaN(distancia) || isNaN(consumo) || isNaN(preco)) {
+                alert("Por favor, preencha todos os campos corretamente.");
+                return;
+            }
+            
+            let custo = (distancia / consumo) * preco;
+            document.getElementById("resultado").innerText = `Custo estimado do frete: R$ ${custo.toFixed(2)}`;
+        }
+
+        function gerarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            let resultado = document.getElementById("resultado").innerText;
+            if (!resultado) {
+                alert("Calcule o frete antes de gerar o PDF.");
+                return;
+            }
+            
+            doc.text("Resultado do Cálculo de Frete", 10, 10);
+            doc.text(resultado, 10, 20);
+            doc.save("frete.pdf");
+        }
+    </script>
 </body>
 </html>
