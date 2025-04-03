@@ -63,11 +63,21 @@ function organizarPDF() {
     doc.save("relatorio_cotacao_frete.pdf");
 
     // Escondendo o "loading"
-    document.getElementById('loading').style.display = 'none';
+    const loadingElement = document.getElementById('loading-pdf');
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
 }
 
 // Chamar a função ao clicar no botão
 document.getElementById('gerar-pdf').addEventListener('click', function() {
-    document.getElementById('loading').style.display = 'block';  // Exibir o "loading"
-    setTimeout(organizarPDF, 1000);  // Simula um pequeno delay para o "loading"
+    const loadingElement = document.getElementById('loading-pdf');
+    const gerarPdfButton = document.getElementById('gerar-pdf');
+    
+    // Verifique se o botão e o elemento de loading existem
+    if (gerarPdfButton && loadingElement) {
+        loadingElement.style.display = 'block';  // Exibir o "loading"
+        gerarPdfButton.style.display = 'none';  // Esconder o botão de gerar PDF
+        setTimeout(organizarPDF, 1000);  // Simula um pequeno delay para o "loading"
+    }
 });
