@@ -7,52 +7,59 @@ body {
 
 .container {
     width: 80%;
-    margin: 20px auto;
+    margin: 0 auto;
     padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
-    color: #333;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    margin: 20px 0;
 }
 
 label {
-    font-size: 14px;
+    display: block;
+    margin: 5px 0;
 }
 
-input {
-    padding: 10px;
-    font-size: 16px;
+input[type="text"],
+input[type="number"] {
     width: 100%;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 8px;
+    margin: 5px 0 15px 0;
+    box-sizing: border-box;
 }
 
 button {
-    padding: 10px 15px;
-    background-color: #28a745;
+    padding: 10px 20px;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #45a049;
+}
+
+#gerar-pdf {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    display: none; /* Inicialmente escondido */
+}
+
+#gerar-pdf:hover {
+    background-color: darkred;
 }
 
 #relatorio {
-    margin-top: 30px;
-    font-size: 16px;
+    margin-top: 20px;
 }
