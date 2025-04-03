@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete - MMB Transportes</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+
     <div class="container">
         <h1>Calculadora de Frete</h1>
         <form id="freteForm">
@@ -18,7 +18,7 @@
             <input type="text" id="destino" required>
 
             <label>Distância (km):</label>
-            <input type="number" id="distancia" step="0.01" required>
+            <input type="number" id="distancia" step="0.1" required>
 
             <label>Número de Eixos:</label>
             <input type="number" id="eixos" required>
@@ -27,13 +27,13 @@
             <input type="number" id="pedagio" step="0.01" required>
 
             <label>ICMS (%):</label>
-            <input type="number" id="icms" step="0.01" required>
+            <input type="number" id="icms" step="0.1" required>
 
             <label>Taxa Federal (%):</label>
-            <input type="number" id="taxaFederal" step="0.01" required>
+            <input type="number" id="taxaFederal" step="0.1" required>
 
             <label>Consumo Médio (km/L):</label>
-            <input type="number" id="kmPorLitro" step="0.01" required>
+            <input type="number" id="kmPorLitro" step="0.1" required>
 
             <label>Preço do Combustível (R$):</label>
             <input type="number" id="precoCombustivel" step="0.01" required>
@@ -44,14 +44,15 @@
             <label>Custos Adicionais (R$):</label>
             <input type="number" id="custosAdicionais" step="0.01" required>
 
-            <label>Margem de Lucro (%):</label>
-            <input type="number" id="lucro" step="0.01" required>
+            <label>Lucro (%):</label>
+            <input type="number" id="lucro" step="0.1" required>
 
-            <button type="submit">Calcular Frete</button>
+            <button type="button" onclick="calcularFrete()">Calcular Frete</button>
         </form>
 
         <div id="resultado"></div>
-        <button id="gerarPdf" style="display:none;">Gerar PDF</button>
+
+        <button id="gerarPdf" onclick="gerarPDF()">Gerar PDF</button>
     </div>
 
     <script src="script.js"></script>
