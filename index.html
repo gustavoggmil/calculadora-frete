@@ -4,52 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="container">
         <h2>Calculadora de Frete</h2>
-
+        
         <label>Origem:</label>
-        <input type="text" id="origem">
+        <input type="text" id="origem" required>
 
         <label>Destino:</label>
-        <input type="text" id="destino">
+        <input type="text" id="destino" required>
 
         <label>Distância (km):</label>
-        <input type="number" id="distancia">
+        <input type="number" id="km" required>
 
         <label>Número de Eixos:</label>
-        <input type="number" id="eixos">
+        <input type="number" id="eixos" required>
 
         <label>Pedágio (R$):</label>
-        <input type="number" id="pedagio">
+        <input type="number" id="pedagio" required>
 
         <label>ICMS (%):</label>
-        <input type="number" id="icms">
+        <input type="number" id="icms" required>
 
         <label>Taxa Federal (%):</label>
-        <input type="number" id="taxaFederal">
+        <input type="number" id="taxaFederal" required>
 
         <label>Consumo Médio (km/L):</label>
-        <input type="number" id="kmPorLitro">
+        <input type="number" id="kmPorLitro" required>
 
         <label>Preço do Combustível (R$):</label>
-        <input type="number" id="precoCombustivel">
+        <input type="number" id="precoCombustivel" required>
 
         <label>Peso da Carga (kg):</label>
-        <input type="number" id="pesoCarga">
+        <input type="number" id="pesoCarga" required>
 
         <label>Custos Adicionais (R$):</label>
-        <input type="number" id="custosAdicionais">
+        <input type="number" id="custosAdicionais" required>
 
-        <label>Lucro (%):</label>
-        <input type="number" id="lucro">
+        <label>Margem de Lucro (%):</label>
+        <input type="number" id="lucro" required>
 
-        <button onclick="calcularFrete()">Calcular</button>
-        
+        <button id="calcular">Calcular</button>
         <div id="resultado"></div>
     </div>
 
