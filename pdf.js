@@ -1,5 +1,11 @@
 window.onload = function() {
     document.getElementById("gerar-pdf").addEventListener("click", function() {
+        // Verificar se jsPDF e jsPDF AutoTable estão carregados corretamente
+        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.autoTable === 'undefined') {
+            console.error("jsPDF ou jsPDF AutoTable não estão carregados corretamente.");
+            return;
+        }
+
         // Pegando os dados do cálculo realizado
         const { origem, destino, distancia, eixos, pedagio, icms, taxaFederal, custoCombustivel, valorFrete, custoTotalComImpostos, lucroLiquido } = window.calculoFreteData;
 
