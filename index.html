@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete</title>
     <link rel="stylesheet" href="style.css">
+    <!-- CDN para jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -46,13 +48,18 @@
             <label for="lucro">Margem de Lucro (%):</label>
             <input type="number" id="lucro" required>
 
-            <button type="button" id="calcular">Calcular Frete</button>
+            <button type="button" id="calcular-frete">Calcular Frete</button>
         </form>
 
+        <!-- Relatório do cálculo -->
         <div id="relatorio"></div>
+
+        <!-- Botão para gerar o PDF (inicialmente invisível) -->
+        <button id="gerar-pdf" style="display: none;">Gerar PDF</button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="script.js"></script>
+    <!-- Script do cálculo e PDF -->
+    <script src="botaocalcular.js"></script>
+    <script src="pdf.js"></script>
 </body>
 </html>
