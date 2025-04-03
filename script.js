@@ -1,5 +1,7 @@
 document.getElementById("freteForm").addEventListener("submit", function(event) {
     event.preventDefault();
+    
+    console.log("Formulário enviado! Calculando...");
 
     let origem = document.getElementById("origem").value;
     let destino = document.getElementById("destino").value;
@@ -13,6 +15,12 @@ document.getElementById("freteForm").addEventListener("submit", function(event) 
     let pesoCarga = parseFloat(document.getElementById("pesoCarga").value);
     let custosAdicionais = parseFloat(document.getElementById("custosAdicionais").value);
     let lucro = parseFloat(document.getElementById("lucro").value);
+
+    if (isNaN(km) || isNaN(eixos) || isNaN(pedagio) || isNaN(icms) || isNaN(taxaFederal) ||
+        isNaN(kmPorLitro) || isNaN(precoCombustivel) || isNaN(pesoCarga) || isNaN(custosAdicionais) || isNaN(lucro)) {
+        alert("Por favor, preencha todos os campos corretamente!");
+        return;
+    }
 
     let seguroCarga = 350.00;
     let desembarque = 1500.00;
@@ -33,6 +41,8 @@ document.getElementById("freteForm").addEventListener("submit", function(event) 
     let valorFrete = custoTotalComImpostos * (1 + lucro / 100);
     let lucroLiquido = valorFrete - custoTotalComImpostos;
 
+    console.log("Cálculo concluído!");
+
     document.getElementById("resultado").innerHTML = `
         <p><strong>Valor do Frete:</strong> R$ ${valorFrete.toFixed(2)}</p>
         <p><strong>Custo Total com Impostos:</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
@@ -49,7 +59,9 @@ document.getElementById("freteForm").addEventListener("submit", function(event) 
 });
 
 function gerarPDF(origem, destino, valorFrete, custoTotal, custoCombustivel, consumoCombustivel, lucroLiquido) {
+    const { jsPDF } = window.jspdf;
     let doc = new jsPDF();
+
     doc.text("MMB Transportes - Relatório de Frete", 10, 10);
     doc.text(`Origem: ${origem}`, 10, 20);
     doc.text(`Destino: ${destino}`, 10, 30);
@@ -58,5 +70,6 @@ function gerarPDF(origem, destino, valorFrete, custoTotal, custoCombustivel, con
     doc.text(`Combustível: R$ ${custoCombustivel.toFixed(2)}`, 10, 60);
     doc.text(`Consumo: ${consumoCombustivel.toFixed(2)}L`, 10, 70);
     doc.text(`Lucro: R$ ${lucroLiquido.toFixed(2)}`, 10, 80);
+    
     doc.save("frete.pdf");
 }
