@@ -1,10 +1,24 @@
 window.onload = function() {
+    // Verifica se a biblioteca jsPDF está carregada
+    if (typeof window.jspdf === 'undefined') {
+        alert('Erro: jsPDF não está carregado!');
+        return;
+    }
+
     document.getElementById("gerar-pdf").addEventListener("click", function() {
+        // Verifica se os dados de cálculo estão disponíveis
+        if (typeof window.calculoFreteData === 'undefined') {
+            alert('Erro: Dados de cálculo não encontrados!');
+            return;
+        }
+
         // Pegando os dados do cálculo realizado
         const { origem, destino, distancia, eixos, pedagio, icms, taxaFederal, custoCombustivel, valorFrete, custoTotalComImpostos, lucroLiquido } = window.calculoFreteData;
 
+        // Garantir que jsPDF seja carregado da forma correta
+        const { jsPDF } = window.jspdf;
+        
         // Criando o PDF
-        const { jsPDF } = window.jspdf;  // Garantir que jsPDF seja carregado da forma correta
         const pdf = new jsPDF();
         pdf.setFontSize(16);
         pdf.setTextColor(0, 102, 204); // Cor azul para o título
