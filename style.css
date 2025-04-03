@@ -1,10 +1,97 @@
-body {
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
 }
-input, button {
+
+/* Estilo do corpo */
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+/* Caixa principal */
+.container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Cabeçalho */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilo dos labels */
+label {
     display: block;
-    margin: 10px auto;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #444;
+}
+
+/* Campos de entrada */
+input {
+    width: 100%;
     padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Botão principal */
+button {
+    width: 100%;
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px;
+    margin-top: 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Resultado */
+#resultado {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Botão dentro do resultado */
+#resultado button {
+    background: #007bff;
+    margin-top: 10px;
+}
+
+#resultado button:hover {
+    background: #0056b3;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .container {
+        max-width: 90%;
+    }
 }
