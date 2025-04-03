@@ -4,55 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete - MMB Transportes</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-
     <div class="container">
         <h1>Calculadora de Frete</h1>
         <form id="freteForm">
-            <label>Origem:</label>
-            <input type="text" id="origem" required>
+            <label>Origem: <input type="text" id="origem" required></label>
+            <label>Destino: <input type="text" id="destino" required></label>
+            <label>Distância (km): <input type="number" id="distancia" step="0.1" required></label>
+            <label>Número de eixos: <input type="number" id="eixos" required></label>
+            <label>Pedágio (R$): <input type="number" id="pedagio" step="0.01" required></label>
+            <label>ICMS (%): <input type="number" id="icms" step="0.1" required></label>
+            <label>Taxa Federal (%): <input type="number" id="taxaFederal" step="0.1" required></label>
+            <label>Km por litro: <input type="number" id="kmPorLitro" step="0.1" required></label>
+            <label>Preço do combustível (R$/L): <input type="number" id="precoCombustivel" step="0.01" required></label>
+            <label>Peso da carga (kg): <input type="number" id="pesoCarga" step="1" required></label>
+            <label>Custos adicionais (R$): <input type="number" id="custosAdicionais" step="0.01" required></label>
+            <label>Lucro desejado (%): <input type="number" id="lucro" step="0.1" required></label>
 
-            <label>Destino:</label>
-            <input type="text" id="destino" required>
-
-            <label>Distância (km):</label>
-            <input type="number" id="distancia" step="0.1" required>
-
-            <label>Número de Eixos:</label>
-            <input type="number" id="eixos" required>
-
-            <label>Pedágio (R$):</label>
-            <input type="number" id="pedagio" step="0.01" required>
-
-            <label>ICMS (%):</label>
-            <input type="number" id="icms" step="0.1" required>
-
-            <label>Taxa Federal (%):</label>
-            <input type="number" id="taxaFederal" step="0.1" required>
-
-            <label>Consumo Médio (km/L):</label>
-            <input type="number" id="kmPorLitro" step="0.1" required>
-
-            <label>Preço do Combustível (R$):</label>
-            <input type="number" id="precoCombustivel" step="0.01" required>
-
-            <label>Peso da Carga (kg):</label>
-            <input type="number" id="pesoCarga" required>
-
-            <label>Custos Adicionais (R$):</label>
-            <input type="number" id="custosAdicionais" step="0.01" required>
-
-            <label>Lucro (%):</label>
-            <input type="number" id="lucro" step="0.1" required>
-
-            <button type="button" onclick="calcularFrete()">Calcular Frete</button>
+            <button type="button" id="calcularFrete">Calcular Frete</button>
         </form>
 
         <div id="resultado"></div>
-
-        <button id="gerarPdf" onclick="gerarPDF()">Gerar PDF</button>
+        <button id="gerarPdf" style="display:none;">Gerar PDF</button>
     </div>
 
     <script src="script.js"></script>
