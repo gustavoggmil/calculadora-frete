@@ -1,24 +1,15 @@
 window.onload = function() {
-    // Verifica se a biblioteca jsPDF está carregada
-    if (typeof window.jspdf === 'undefined') {
-        alert('Erro: jsPDF não está carregado!');
-        return;
-    }
-
     document.getElementById("gerar-pdf").addEventListener("click", function() {
-        // Verifica se os dados de cálculo estão disponíveis
-        if (typeof window.calculoFreteData === 'undefined') {
-            alert('Erro: Dados de cálculo não encontrados!');
-            return;
-        }
-
         // Pegando os dados do cálculo realizado
         const { origem, destino, distancia, eixos, pedagio, icms, taxaFederal, custoCombustivel, valorFrete, custoTotalComImpostos, lucroLiquido } = window.calculoFreteData;
 
-        // Garantir que jsPDF seja carregado da forma correta
-        const { jsPDF } = window.jspdf;
-        
+        // Função para garantir que os valores sejam válidos
+        function formatarValor(valor) {
+            return (valor && !isNaN(valor)) ? valor.toFixed(2) : "0.00"; // Retorna "0.00" se o valor não for válido
+        }
+
         // Criando o PDF
+        const { jsPDF } = window.jspdf;
         const pdf = new jsPDF();
         pdf.setFontSize(16);
         pdf.setTextColor(0, 102, 204); // Cor azul para o título
@@ -35,13 +26,13 @@ window.onload = function() {
             ["Destino", destino],
             ["Distância", `${distancia} km`],
             ["Eixos", eixos],
-            ["Pedágio", `R$ ${pedagio.toFixed(2)}`],
+            ["Pedágio", `R$ ${formatarValor(pedagio)}`],
             ["ICMS", `${icms}%`],
             ["Taxa Federal", `${taxaFederal}%`],
-            ["Custo Combustível", `R$ ${custoCombustivel.toFixed(2)}`],
-            ["Valor Base do Frete", `R$ ${valorFrete.toFixed(2)}`],
-            ["Custo Total (com impostos)", `R$ ${custoTotalComImpostos.toFixed(2)}`],
-            ["Lucro Líquido", `R$ ${lucroLiquido.toFixed(2)}`]
+            ["Custo Combustível", `R$ ${formatarValor(custoCombustivel)}`],
+            ["Valor Base do Frete", `R$ ${formatarValor(valorFrete)}`],
+            ["Custo Total (com impostos)", `R$ ${formatarValor(custoTotalComImpostos)}`],
+            ["Lucro Líquido", `R$ ${formatarValor(lucroLiquido)}`]
         ];
 
         // Configuração da tabela
