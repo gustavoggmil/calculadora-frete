@@ -1,15 +1,23 @@
-document.getElementById('gerar-pdf').addEventListener('click', function() {
-    // Verificar se a mensagem de 'organizando PDF' existe
-    const mensagemProcessando = document.getElementById('mensagem-processando');
-    if (mensagemProcessando) {
-        mensagemProcessando.innerText = "Organizando PDF...";
-        mensagemProcessando.style.display = 'block';  // Exibir a mensagem
+window.onload = function() {
+    // Verifica se a biblioteca jsPDF está carregada corretamente
+    if (typeof window.jspdf === 'undefined') {
+        alert('Erro: jsPDF não está carregado!');
+        return;
     }
 
-    // Verificar se window.calculoFreteData existe e contém os dados necessários
-    if (window.calculoFreteData) {
+    // Verifica se os dados de cálculo estão disponíveis
+    if (typeof window.calculoFreteData === 'undefined') {
+        alert('Erro: Dados de cálculo não encontrados!');
+        return;
+    }
+
+    document.getElementById("gerar-pdf").addEventListener("click", function() {
+        // Pegando os dados do cálculo realizado
         const { origem, destino, distancia, eixos, pedagio, icms, taxaFederal, custoCombustivel, valorFrete, custoTotalComImpostos, lucroLiquido } = window.calculoFreteData;
 
+        // Garantir que jsPDF seja carregado da forma correta
+        const { jsPDF } = window.jspdf;
+        
         // Criando o PDF
         const pdf = new jsPDF();
         pdf.setFontSize(16);
@@ -27,13 +35,13 @@ document.getElementById('gerar-pdf').addEventListener('click', function() {
             ["Destino", destino],
             ["Distância", `${distancia} km`],
             ["Eixos", eixos],
-            ["Pedágio", pedagio ? `R$ ${pedagio.toFixed(2)}` : 'R$ 0,00'],
-            ["ICMS", icms ? `${icms}%` : '0%'],
-            ["Taxa Federal", taxaFederal ? `${taxaFederal}%` : '0%'],
-            ["Custo Combustível", custoCombustivel ? `R$ ${custoCombustivel.toFixed(2)}` : 'R$ 0,00'],
-            ["Valor Base do Frete", valorFrete ? `R$ ${valorFrete.toFixed(2)}` : 'R$ 0,00'],
-            ["Custo Total (com impostos)", custoTotalComImpostos ? `R$ ${custoTotalComImpostos.toFixed(2)}` : 'R$ 0,00'],
-            ["Lucro Líquido", lucroLiquido ? `R$ ${lucroLiquido.toFixed(2)}` : 'R$ 0,00']
+            ["Pedágio", `R$ ${pedagio ? pedagio.toFixed(2) : '0.00'}`], // Verificar se pedagio está definido
+            ["ICMS", `${icms}%`],
+            ["Taxa Federal", `${taxaFederal}%`],
+            ["Custo Combustível", `R$ ${custoCombustivel ? custoCombustivel.toFixed(2) : '0.00'}`],
+            ["Valor Base do Frete", `R$ ${valorFrete ? valorFrete.toFixed(2) : '0.00'}`],
+            ["Custo Total (com impostos)", `R$ ${custoTotalComImpostos ? custoTotalComImpostos.toFixed(2) : '0.00'}`],
+            ["Lucro Líquido", `R$ ${lucroLiquido ? lucroLiquido.toFixed(2) : '0.00'}`]
         ];
 
         // Configuração da tabela
@@ -61,15 +69,5 @@ document.getElementById('gerar-pdf').addEventListener('click', function() {
 
         // Salvar o PDF com o nome do arquivo
         pdf.save(`relatorio_frete_${origem}_${destino}.pdf`);
-
-        // Esconder a mensagem de 'organizando PDF' após a geração do PDF
-        if (mensagemProcessando) {
-            mensagemProcessando.style.display = 'none';  // Esconder a mensagem
-        }
-    } else {
-        console.error("Dados de frete não encontrados!");
-        if (mensagemProcessando) {
-            mensagemProcessando.innerText = "Erro ao organizar o PDF. Tente novamente.";
-        }
-    }
-});
+    });
+};
