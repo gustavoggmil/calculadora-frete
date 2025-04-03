@@ -12,11 +12,20 @@ document.getElementById('calcular-frete').addEventListener('click', function() {
     const custosAdicionais = parseFloat(document.getElementById('custos-adicionais').value);
     const lucro = parseFloat(document.getElementById('lucro').value);
 
-    // Calculando o frete
+    // Cálculo do custo de combustível
     const custoCombustivel = (distancia / kmPorLitro) * precoCombustivel;
-    const valorFrete = (distancia * 0.1) + pedagio + custosAdicionais; // Exemplo de cálculo de frete
+
+    // Cálculo do valor base do frete (simples exemplo, poderia depender de mais fatores)
+    const valorBaseFrete = distancia * (0.5 + (eixos * 0.1));  // Ajuste com base nos eixos
+
+    // Cálculo do custo total do frete com pedágio e custos adicionais
+    const valorFrete = valorBaseFrete + pedagio + custosAdicionais + custoCombustivel;
+
+    // Aplicando os impostos sobre o valor do frete
     const custoTotalComImpostos = valorFrete * (1 + icms / 100) * (1 + taxaFederal / 100);
-    const lucroLiquido = custoTotalComImpostos * (lucro / 100);
+
+    // Aplicando a margem de lucro
+    const lucroLiquido = custoTotalComImpostos * (1 + lucro / 100);
 
     // Armazenando os dados no objeto global para o PDF
     window.calculoFreteData = {
@@ -45,7 +54,9 @@ document.getElementById('calcular-frete').addEventListener('click', function() {
         <p><strong>Origem:</strong> ${origem}</p>
         <p><strong>Destino:</strong> ${destino}</p>
         <p><strong>Distância:</strong> ${distancia} km</p>
-        <p><strong>Valor do Frete:</strong> R$ ${valorFrete.toFixed(2)}</p>
+        <p><strong>Valor Base do Frete:</strong> R$ ${valorBaseFrete.toFixed(2)}</p>
+        <p><strong>Custo Combustível:</strong> R$ ${custoCombustivel.toFixed(2)}</p>
+        <p><strong>Custo Total do Frete:</strong> R$ ${valorFrete.toFixed(2)}</p>
         <p><strong>Custo Total com Impostos:</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
         <p><strong>Lucro Líquido:</strong> R$ ${lucroLiquido.toFixed(2)}</p>
     `;
