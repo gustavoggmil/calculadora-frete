@@ -11,9 +11,9 @@ body {
     background-color: #f4f4f4;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 20px;
+    overflow-y: auto; /* Permite rolagem vertical */
 }
 
 /* Caixa principal */
