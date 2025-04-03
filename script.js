@@ -1,26 +1,33 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("calcularFrete").addEventListener("click", calcularFrete);
-    document.getElementById("gerarPdf").addEventListener("click", gerarPDF);
+    let calcularFreteBtn = document.getElementById("calcularFrete");
+    let gerarPdfBtn = document.getElementById("gerarPdf");
+
+    if (calcularFreteBtn) {
+        calcularFreteBtn.addEventListener("click", calcularFrete);
+    }
+
+    if (gerarPdfBtn) {
+        gerarPdfBtn.addEventListener("click", gerarPDF);
+    }
 });
 
 function calcularFrete() {
     console.log("Iniciando cálculo...");
 
-    let origem = document.getElementById("origem").value;
-    let destino = document.getElementById("destino").value;
-    let km = parseFloat(document.getElementById("distancia").value);
-    let eixos = parseInt(document.getElementById("eixos").value);
-    let pedagio = parseFloat(document.getElementById("pedagio").value);
-    let icms = parseFloat(document.getElementById("icms").value) / 100;
-    let taxaFederal = parseFloat(document.getElementById("taxaFederal").value) / 100;
-    let kmPorLitro = parseFloat(document.getElementById("kmPorLitro").value);
-    let precoCombustivel = parseFloat(document.getElementById("precoCombustivel").value);
-    let pesoCarga = parseFloat(document.getElementById("pesoCarga").value);
-    let custosAdicionais = parseFloat(document.getElementById("custosAdicionais").value);
-    let lucro = parseFloat(document.getElementById("lucro").value) / 100;
+    let origem = document.getElementById("origem")?.value || "";
+    let destino = document.getElementById("destino")?.value || "";
+    let km = parseFloat(document.getElementById("distancia")?.value) || 0;
+    let eixos = parseInt(document.getElementById("eixos")?.value) || 0;
+    let pedagio = parseFloat(document.getElementById("pedagio")?.value) || 0;
+    let icms = parseFloat(document.getElementById("icms")?.value) / 100 || 0;
+    let taxaFederal = parseFloat(document.getElementById("taxaFederal")?.value) / 100 || 0;
+    let kmPorLitro = parseFloat(document.getElementById("kmPorLitro")?.value) || 0;
+    let precoCombustivel = parseFloat(document.getElementById("precoCombustivel")?.value) || 0;
+    let pesoCarga = parseFloat(document.getElementById("pesoCarga")?.value) || 0;
+    let custosAdicionais = parseFloat(document.getElementById("custosAdicionais")?.value) || 0;
+    let lucro = parseFloat(document.getElementById("lucro")?.value) / 100 || 0;
 
-    if (isNaN(km) || isNaN(eixos) || isNaN(pedagio) || isNaN(icms) || isNaN(taxaFederal) || 
-        isNaN(kmPorLitro) || isNaN(precoCombustivel) || isNaN(pesoCarga) || isNaN(custosAdicionais) || isNaN(lucro)) {
+    if (!origem || !destino || km <= 0 || eixos <= 0 || kmPorLitro <= 0 || precoCombustivel <= 0) {
         alert("Preencha todos os campos corretamente!");
         return;
     }
@@ -58,9 +65,11 @@ function calcularFrete() {
 
 function gerarPDF() {
     console.log("Gerando PDF...");
-    
-    let pdf = new window.jspdf.jsPDF();
-    let resultado = document.getElementById("resultado").innerText;
+
+    const { jsPDF } = window.jspdf;
+    let pdf = new jsPDF();
+
+    let resultado = document.getElementById("resultado")?.innerText || "Nenhum resultado disponível";
 
     pdf.text("MMB Transportes - Cotação de Frete", 10, 10);
     pdf.text(resultado, 10, 20);
