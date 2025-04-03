@@ -1,4 +1,13 @@
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("freteForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        calcularFrete();
+    });
+});
+
 function calcularFrete() {
+    console.log("Iniciando cálculo...");
+
     let origem = document.getElementById("origem").value;
     let destino = document.getElementById("destino").value;
     let km = parseFloat(document.getElementById("distancia").value);
@@ -11,6 +20,12 @@ function calcularFrete() {
     let pesoCarga = parseFloat(document.getElementById("pesoCarga").value);
     let custosAdicionais = parseFloat(document.getElementById("custosAdicionais").value);
     let lucro = parseFloat(document.getElementById("lucro").value) / 100;
+
+    if (isNaN(km) || isNaN(eixos) || isNaN(pedagio) || isNaN(icms) || isNaN(taxaFederal) || 
+        isNaN(kmPorLitro) || isNaN(precoCombustivel) || isNaN(pesoCarga) || isNaN(custosAdicionais) || isNaN(lucro)) {
+        alert("Preencha todos os campos corretamente!");
+        return;
+    }
 
     let seguroCarga = 350.00;
     let desembarque = 1500.00;
@@ -30,6 +45,8 @@ function calcularFrete() {
     let valorFrete = custoTotalComImpostos * (1 + lucro);
     let lucroLiquido = valorFrete - custoTotalComImpostos;
 
+    console.log("Cálculo concluído, exibindo resultado...");
+
     document.getElementById("resultado").innerHTML = `
         <p><strong>Origem:</strong> ${origem}</p>
         <p><strong>Destino:</strong> ${destino}</p>
@@ -43,12 +60,20 @@ function calcularFrete() {
 }
 
 function gerarPDF() {
-    let resultado = document.getElementById("resultado").innerHTML;
+    console.log("Gerando PDF...");
+
+    let resultado = document.getElementById("resultado").innerText;
+
+    if (!resultado) {
+        alert("Calcule o frete antes de gerar o PDF!");
+        return;
+    }
+
     let pdf = new window.jspdf.jsPDF();
     
     pdf.text("MMB Transportes LTDA", 10, 10);
     pdf.text("Relatório de Cotação de Frete", 10, 20);
-    pdf.text(resultado.replace(/<[^>]*>/g, ""), 10, 30); // Remove tags HTML
-    
+    pdf.text(resultado, 10, 30);
+
     pdf.save("cotacao_frete.pdf");
 }
