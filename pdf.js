@@ -1,19 +1,19 @@
-// Função para gerar o PDF
 function gerarPDF() {
-    const { origem, destino, valorFrete, custoTotalComImpostos, lucroLiquido } = window.calculoFreteData;
-
     const { jsPDF } = window.jspdf;
+
+    // Criação do PDF
     const doc = new jsPDF();
+    const dados = window.calculoFreteData;
 
-    doc.text(`Relatório de Cálculo de Frete`, 10, 10);
-    doc.text(`Origem: ${origem}`, 10, 20);
-    doc.text(`Destino: ${destino}`, 10, 30);
-    doc.text(`Valor do Frete (R$): R$ ${valorFrete.toFixed(2)}`, 10, 40);
-    doc.text(`Custo Total com Impostos (R$): R$ ${custoTotalComImpostos.toFixed(2)}`, 10, 50);
-    doc.text(`Lucro Líquido (R$): R$ ${lucroLiquido.toFixed(2)}`, 10, 60);
+    doc.setFont("Arial", "B", 16);
+    doc.text("MMB Transportes LTDA", 105, 10, null, null, 'center');
+    doc.text("RELATÓRIO DE COTAÇÃO DE FRETE", 105, 20, null, null, 'center');
+    doc.text(`Origem: ${dados.origem}`, 10, 30);
+    doc.text(`Destino: ${dados.destino}`, 10, 40);
+    doc.text(`Valor do Frete (R$): R$ ${dados.valorFrete.toFixed(2)}`, 10, 50);
+    doc.text(`Custo Total com Impostos (R$): R$ ${dados.custoTotalComImpostos.toFixed(2)}`, 10, 60);
+    doc.text(`Lucro Líquido (R$): R$ ${dados.lucroLiquido.toFixed(2)}`, 10, 70);
 
-    doc.save('relatorio_frete.pdf');
+    // Salvar o PDF
+    doc.save('cotacao_frete.pdf');
 }
-
-// Adicionando o evento de clique para gerar o PDF
-document.getElementById('gerar-pdf').addEventListener('click', gerarPDF);
