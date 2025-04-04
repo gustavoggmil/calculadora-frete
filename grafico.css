@@ -1,65 +1,21 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+/* grafico.css */
+
+/* Estilo padrão do gráfico pizza */
+#grafico-pizza {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 300px;
+    z-index: 1000;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transition: bottom 0.3s ease;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-}
-
-form {
-    margin: 20px 0;
-}
-
-label {
-    display: block;
-    margin: 5px 0;
-}
-
-input[type="text"],
-input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0 15px 0;
-    box-sizing: border-box;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#gerar-pdf {
-    background-color: red;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    display: none; /* Inicialmente escondido */
-}
-
-#gerar-pdf:hover {
-    background-color: darkred;
-}
-
-#relatorio {
-    margin-top: 20px;
+/* Classe que faz o gráfico subir quando necessário */
+#grafico-pizza.subir {
+    bottom: 150px; /* Ajusta a altura ao abrir detalhes, pode alterar esse valor */
 }
