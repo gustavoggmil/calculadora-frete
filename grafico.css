@@ -1,7 +1,7 @@
 /* grafico.css */
 
-/* Estilo padrão do gráfico pizza */
-#grafico-pizza {
+/* Container fixo no canto inferior direito */
+#container-grafico {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -14,29 +14,17 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     transition: all 0.4s ease-in-out;
     cursor: pointer;
+    display: none; /* Mantém oculto até ser acionado */
 }
 
-/* Classe que faz o gráfico subir */
-#grafico-pizza.subir {
-    bottom: 150px;
-}
-
-/* Container do gráfico com animação de expansão */
-#grafico-pizza-container {
-    transition: all 0.4s ease-in-out;
-    max-width: 400px;
-    margin: auto;
-    position: relative;
-}
-
-/* Modo expandido: ocupa a tela inteira */
-#grafico-pizza-container.expandido {
+/* Quando expandido, ocupa a tela toda */
+#container-grafico.expandido {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #ffffff;
+    background: white;
     z-index: 2000;
     padding: 40px 20px;
     display: flex;
@@ -44,18 +32,18 @@
     align-items: center;
     justify-content: center;
     border-radius: 0;
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Redimensiona o canvas no modo expandido */
-#grafico-pizza-container.expandido canvas {
+/* Redimensiona o canvas ao expandir */
+#container-grafico.expandido canvas {
     width: 100%;
     max-width: 500px;
     max-height: 300px;
     transition: all 0.3s ease;
 }
 
-/* Detalhes visuais abaixo do gráfico */
+/* Lista de detalhes quando expandido */
 #lista-detalhes {
     margin-top: 25px;
     text-align: left;
@@ -65,21 +53,8 @@
     animation: fadeIn 0.5s ease;
 }
 
-/* Título dos detalhes */
-#lista-detalhes h3 {
-    margin-bottom: 10px;
-    font-size: 22px;
-    color: #2c3e50;
-}
-
-/* Lista dos itens de detalhe */
-#lista-detalhes ul {
-    list-style: disc;
-    margin-left: 20px;
-}
-
-/* Botão de fechar */
-#lista-detalhes button {
+/* Botão para fechar o gráfico expandido */
+#fechar-grafico {
     margin-top: 20px;
     padding: 10px 16px;
     background-color: #2ecc71;
@@ -88,16 +63,16 @@
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-#lista-detalhes button:hover {
+#fechar-grafico:hover {
     background-color: #27ae60;
     transform: translateY(-2px);
 }
 
-/* Animação para suavizar a entrada dos detalhes */
+/* Animação suave para exibir os detalhes */
 @keyframes fadeIn {
     from {
         opacity: 0;
