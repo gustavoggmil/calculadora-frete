@@ -68,6 +68,28 @@ function calcularFrete() {
         custoTotalComImpostos,
         lucroLiquido
     };
+
+    // Emitir evento para atualizar gráfico
+    const despesasDetalhadas = [
+        { nome: "Seguro da Carga", valor: seguroCarga },
+        { nome: "Desembarque", valor: desembarque },
+        { nome: "Pancard Vale-Pedágio", valor: pancardValePedagio },
+        { nome: "Buonny Cadastro Motorista", valor: buonnyCadastroMotorista },
+        { nome: "Combustível", valor: custoCombustivel },
+        { nome: "Pedágio", valor: pedagio },
+        { nome: "Custos Adicionais", valor: custosAdicionais },
+        { nome: "Taxa por Peso", valor: taxaPeso },
+        { nome: "ICMS", valor: valorIcms },
+        { nome: "Taxa Federal", valor: valorTaxaFederal }
+    ];
+
+    const eventoGrafico = new CustomEvent("graficoAtualizar", {
+        detail: {
+            lucroLiquido,
+            despesasDetalhadas
+        }
+    });
+    document.dispatchEvent(eventoGrafico);
 }
 
 // Adicionando o evento de clique
