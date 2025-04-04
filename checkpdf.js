@@ -1,7 +1,7 @@
-window.onload = function() {
+window.onload = function () {
     // Verifica se a biblioteca jsPDF está carregada corretamente
-    if (typeof window.jspdf === 'undefined') {
-        alert('Erro: jsPDF não está carregado!');
+    if (typeof window.jspdf === 'undefined' || typeof window.jspdf.autoTable === 'undefined') {
+        alert('Erro: jsPDF ou jsPDF AutoTable não está carregado!');
         return;
     }
 
@@ -11,63 +11,107 @@ window.onload = function() {
         return;
     }
 
-    document.getElementById("gerar-pdf").addEventListener("click", function() {
-        // Pegando os dados do cálculo realizado
-        const { origem, destino, distancia, eixos, pedagio, icms, taxaFederal, custoCombustivel, valorFrete, custoTotalComImpostos, lucroLiquido } = window.calculoFreteData;
+    document.getElementById("gerar-pdf").addEventListener("click", function () {
+        const {
+            origem,
+            destino,
+            distancia,
+            eixos,
+            pedagio,
+            icms,
+            taxaFederal,
+            custoCombustivel,
+            valorFrete,
+            custoTotalComImpostos,
+            lucroLiquido
+        } = window.calculoFreteData;
 
-        // Garantir que jsPDF seja carregado da forma correta
         const { jsPDF } = window.jspdf;
-        
-        // Criando o PDF
         const pdf = new jsPDF();
+
+        // Cabeçalho
         pdf.setFontSize(16);
-        pdf.setTextColor(0, 102, 204); // Cor azul para o título
+        pdf.setTextColor(0, 102, 204);
         pdf.text("MMB Transportes LTDA", 20, 20);
+
         pdf.setFontSize(14);
         pdf.text("Relatório de Cotação de Frete", 20, 30);
 
         pdf.setFontSize(12);
-        pdf.setTextColor(0, 0, 0); // Resetar cor para o conteúdo
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(`Data: ${new Date().toLocaleDateString()}`, 150, 20);
 
-        // Definir a tabela com dados do relatório
+        // Tabela com dados operacionais e despesas
         const dados = [
             ["Origem", origem],
             ["Destino", destino],
             ["Distância", `${distancia} km`],
             ["Eixos", eixos],
-            ["Pedágio", `R$ ${pedagio ? pedagio.toFixed(2) : '0.00'}`], // Verificar se pedagio está definido
+            ["Pedágio", `R$ ${pedagio?.toFixed(2) || '0.00'}`],
             ["ICMS", `${icms}%`],
             ["Taxa Federal", `${taxaFederal}%`],
-            ["Custo Combustível", `R$ ${custoCombustivel ? custoCombustivel.toFixed(2) : '0.00'}`],
-            ["Valor Base do Frete", `R$ ${valorFrete ? valorFrete.toFixed(2) : '0.00'}`],
-            ["Custo Total (com impostos)", `R$ ${custoTotalComImpostos ? custoTotalComImpostos.toFixed(2) : '0.00'}`],
-            ["Lucro Líquido", `R$ ${lucroLiquido ? lucroLiquido.toFixed(2) : '0.00'}`]
+            ["Custo Combustível", `R$ ${custoCombustivel?.toFixed(2) || '0.00'}`]
         ];
 
-        // Configuração da tabela
         pdf.autoTable({
             startY: 40,
             head: [['Descrição', 'Valor']],
             body: dados,
             theme: 'grid',
             headStyles: {
-                fillColor: [0, 102, 204], // Azul para o cabeçalho
+                fillColor: [0, 102, 204],
                 textColor: 255,
                 fontSize: 12,
                 fontStyle: 'bold'
             },
             bodyStyles: {
                 fontSize: 12,
-                textColor: [0, 0, 0], // Texto preto
+                textColor: [255, 0, 0] // despesas em vermelho
             },
-            margin: { top: 10 },
             columnStyles: {
                 0: { cellWidth: 90 },
                 1: { cellWidth: 90 }
             }
         });
 
-        // Salvar o PDF com o nome do arquivo
+        // Tabela com valores principais
+        const totais = [
+            ["Valor Bruto do Frete", `R$ ${valorFrete?.toFixed(2) || '0.00'}`],
+            ["Custo Total com Impostos", `R$ ${custoTotalComImpostos?.toFixed(2) || '0.00'}`],
+            ["Lucro Líquido", `R$ ${lucroLiquido?.toFixed(2) || '0.00'}`]
+        ];
+
+        pdf.autoTable({
+            startY: pdf.lastAutoTable.finalY + 10,
+            head: [['Resumo Financeiro', 'Valor']],
+            body: totais,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [0, 102, 204],
+                textColor: 255,
+                fontSize: 12,
+                fontStyle: 'bold'
+            },
+            bodyStyles: {
+                fontSize: 12,
+                textColor: (data) => {
+                    if (data.row.index === 0) return [0, 102, 204]; // Azul para frete bruto
+                    if (data.row.index === 2) return [255, 0, 0]; // Vermelho para lucro líquido
+                    return [0, 0, 0]; // Preto para o restante
+                }
+            },
+            columnStyles: {
+                0: { cellWidth: 90 },
+                1: { cellWidth: 90 }
+            }
+        });
+
+        // Rodapé
+        pdf.setFontSize(10);
+        pdf.setTextColor(150);
+        pdf.text("Documento gerado automaticamente pelo sistema da MMB Transportes", 20, 285);
+
+        // Salvar o PDF
         pdf.save(`relatorio_frete_${origem}_${destino}.pdf`);
     });
 };
