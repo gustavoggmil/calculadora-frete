@@ -14,24 +14,29 @@ function calcularFrete() {
     const custosAdicionais = parseFloat(document.getElementById('custos-adicionais').value);
     const lucro = parseFloat(document.getElementById('lucro').value);
 
-    // Cálculos
+    // Cálculos fixos
     const seguroCarga = 350.00;
     const desembarque = 1500.00;
     const pancardValePedagio = 260.00;
     const buonnyCadastroMotorista = 60.00;
 
+    // Cálculo do combustível
     const consumoCombustivel = distancia / kmPorLitro;
     const custoCombustivel = consumoCombustivel * precoCombustivel;
 
+    // Taxa por peso
     const taxaPeso = pesoCarga * 0.05;
 
+    // Custo total antes dos impostos
     const custoTotal = seguroCarga + desembarque + pancardValePedagio + buonnyCadastroMotorista +
         custoCombustivel + pedagio + custosAdicionais + taxaPeso;
 
+    // Impostos
     const valorIcms = custoTotal * (icms / 100);
     const valorTaxaFederal = custoTotal * (taxaFederal / 100);
     const custoTotalComImpostos = custoTotal + valorIcms + valorTaxaFederal;
 
+    // Valor final do frete
     const valorFrete = custoTotalComImpostos * (1 + lucro / 100);
     const lucroLiquido = valorFrete - custoTotalComImpostos;
 
@@ -40,23 +45,30 @@ function calcularFrete() {
         <h3>Resultado do Cálculo:</h3>
         <p><strong>Origem:</strong> ${origem}</p>
         <p><strong>Destino:</strong> ${destino}</p>
-        <p><strong>Valor do Frete (R$):</strong> R$ ${valorFrete.toFixed(2)}</p>
-        <p><strong>Custo Total com Impostos (R$):</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
-        <p><strong>Lucro Líquido (R$):</strong> R$ ${lucroLiquido.toFixed(2)}</p>
+        <p><strong>Distância:</strong> ${distancia} km</p>
+        <p><strong>Valor do Frete:</strong> R$ ${valorFrete.toFixed(2)}</p>
+        <p><strong>Custo Total com Impostos:</strong> R$ ${custoTotalComImpostos.toFixed(2)}</p>
+        <p><strong>Lucro Líquido:</strong> R$ ${lucroLiquido.toFixed(2)}</p>
     `;
 
-    // Exibindo o botão para gerar PDF
+    // Mostrar botão PDF
     document.getElementById('gerar-pdf').style.display = 'inline-block';
 
-    // Armazenar os dados necessários para o PDF
+    // Armazenar os dados para o PDF
     window.calculoFreteData = {
         origem,
         destino,
+        distancia,
+        eixos,
+        pedagio,
+        icms,
+        taxaFederal,
+        custoCombustivel,
         valorFrete,
         custoTotalComImpostos,
         lucroLiquido
     };
 }
 
-// Adicionando os eventos de clique
+// Adicionando o evento de clique
 document.getElementById('calcular-frete').addEventListener('click', calcularFrete);
