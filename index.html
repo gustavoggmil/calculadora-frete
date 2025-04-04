@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Adicionando o Favicon -->
     <link rel="icon" href="logo.png" type="image/png">
-    <!-- CDN para jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- CDN para jsPDF AutoTable (para usar o autoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
@@ -55,19 +52,14 @@
             <button type="button" id="calcular-frete">Calcular Frete</button>
         </form>
 
-        <!-- Relatório do cálculo -->
         <div id="relatorio"></div>
 
-        <!-- Botão para gerar o PDF (inicialmente invisível) -->
         <button id="gerar-pdf" style="display: none;">Gerar PDF</button>
-
-        <!-- Indicador de loading enquanto o PDF está sendo gerado -->
         <div id="loading-pdf" style="display: none;">Organizando PDF...</div>
     </div>
 
     <!-- Scripts -->
     <script src="botaocalcular.js"></script>
     <script src="checkpdf.js"></script>
-    <script src="pdf.js"></script>
 </body>
 </html>
