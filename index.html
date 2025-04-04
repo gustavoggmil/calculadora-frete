@@ -1,63 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Frete</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="grafico.css"> <!-- CSS do gráfico separado -->
-    <link rel="icon" href="logo.png" type="image/png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Frete</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="grafico.css" />
+  <link rel="icon" href="logo.png" type="image/png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Calculadora de Frete</h1>
-        <form id="form-frete">
-            <!-- Todos os inputs -->
-            <label for="origem">Origem:</label>
-            <input type="text" id="origem" required>
-            <label for="destino">Destino:</label>
-            <input type="text" id="destino" required>
-            <label for="distancia">Distância (km):</label>
-            <input type="number" id="distancia" required>
-            <label for="eixos">Número de Eixos:</label>
-            <input type="number" id="eixos" required>
-            <label for="pedagio">Pedágio (R$):</label>
-            <input type="number" id="pedagio" required>
-            <label for="icms">ICMS (%):</label>
-            <input type="number" id="icms" required>
-            <label for="taxa-federal">Taxa Federal (%):</label>
-            <input type="number" id="taxa-federal" required>
-            <label for="km-por-litro">Consumo Médio (km/L):</label>
-            <input type="number" id="km-por-litro" required>
-            <label for="preco-combustivel">Preço do Combustível (R$):</label>
-            <input type="number" id="preco-combustivel" required>
-            <label for="peso-carga">Peso da Carga (kg):</label>
-            <input type="number" id="peso-carga" required>
-            <label for="custos-adicionais">Custos Adicionais (R$):</label>
-            <input type="number" id="custos-adicionais" required>
-            <label for="lucro">Margem de Lucro (%):</label>
-            <input type="number" id="lucro" required>
-            <button type="button" id="calcular-frete">Calcular Frete</button>
-        </form>
+  <div class="container">
+    <h1>Calculadora de Frete</h1>
+    <form id="form-frete">
+      <!-- Inputs -->
+      <label for="origem">Origem:</label>
+      <input type="text" id="origem" required />
+      <label for="destino">Destino:</label>
+      <input type="text" id="destino" required />
+      <label for="distancia">Distância (km):</label>
+      <input type="number" id="distancia" required />
+      <label for="eixos">Número de Eixos:</label>
+      <input type="number" id="eixos" required />
+      <label for="pedagio">Pedágio (R$):</label>
+      <input type="number" id="pedagio" required />
+      <label for="icms">ICMS (%):</label>
+      <input type="number" id="icms" required />
+      <label for="taxa-federal">Taxa Federal (%):</label>
+      <input type="number" id="taxa-federal" required />
+      <label for="km-por-litro">Consumo Médio (km/L):</label>
+      <input type="number" id="km-por-litro" required />
+      <label for="preco-combustivel">Preço do Combustível (R$):</label>
+      <input type="number" id="preco-combustivel" required />
+      <label for="peso-carga">Peso da Carga (kg):</label>
+      <input type="number" id="peso-carga" required />
+      <label for="custos-adicionais">Custos Adicionais (R$):</label>
+      <input type="number" id="custos-adicionais" required />
+      <label for="lucro">Margem de Lucro (%):</label>
+      <input type="number" id="lucro" required />
+      <button type="button" id="calcular-frete">Calcular Frete</button>
+    </form>
 
-        <div id="relatorio"></div>
-        <button id="gerar-pdf" style="display: none;">Gerar PDF</button>
-        <div id="loading-pdf" style="display: none;">Organizando PDF...</div>
-    </div>
+    <div id="relatorio"></div>
+    <button id="gerar-pdf" style="display: none;">Gerar PDF</button>
+    <div id="loading-pdf" style="display: none;">Organizando PDF...</div>
 
     <!-- Gráfico Pizza -->
-    <div id="grafico-pizza-container" style="display: none;">
-        <canvas id="graficoPizza"></canvas>
-        <div id="lista-detalhes"></div>
+    <div id="grafico-pizza-container" style="display: none; margin-top: 30px;">
+      <canvas id="graficoPizza" width="400" height="400"></canvas>
+      <div id="lista-detalhes"></div>
     </div>
+  </div>
 
-    <!-- Scripts -->
-    <script src="botaocalcular.js"></script>
-    <script src="checkpdf.js"></script>
-    <script src="pdf.js"></script>
-    <script src="grafico-controlador.js"></script> <!-- JS do gráfico separado -->
+  <!-- Scripts -->
+  <script src="botaocalcular.js"></script>
+  <script src="checkpdf.js"></script>
+  <script src="pdf.js"></script>
+  <script src="grafico-controlador.js"></script>
 </body>
 </html>
