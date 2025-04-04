@@ -49,14 +49,11 @@ function gerarGraficoPizza(lucroLiquido, despesas) {
     document.getElementById('container-grafico').style.display = 'block';
 }
 
-// Executa após clique no botão "Calcular Frete"
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('calcular-frete').addEventListener('click', () => {
-        const data = window.calculoFreteData;
-        if (!data) return;
+// OUVE o evento personalizado que vem do botaocalcular.js
+document.addEventListener("graficoAtualizar", (event) => {
+    const { lucroLiquido, despesasDetalhadas } = event.detail;
 
-        const despesas = data.custoTotalComImpostos || 0;
-        const lucro = data.lucroLiquido || 0;
-        gerarGraficoPizza(lucro, despesas);
-    });
+    const totalDespesas = despesasDetalhadas.reduce((acc, item) => acc + item.valor, 0);
+
+    gerarGraficoPizza(lucroLiquido, totalDespesas);
 });
