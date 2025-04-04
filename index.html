@@ -5,40 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Frete</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Adicionando o Favicon -->
+    <link rel="stylesheet" href="grafico.css"> <!-- CSS do gráfico separado -->
     <link rel="icon" href="logo.png" type="image/png">
-    <!-- CDN para jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- CDN para jsPDF AutoTable (para usar o autoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-    <!-- CDN para Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        #grafico-pizza-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            height: 300px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            padding: 10px;
-            z-index: 1000;
-        }
-        #lista-detalhes {
-            font-size: 12px;
-            margin-top: 10px;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <h1>Calculadora de Frete</h1>
         <form id="form-frete">
-            <!-- Todos os seus inputs já existentes -->
+            <!-- Todos os inputs -->
             <label for="origem">Origem:</label>
             <input type="text" id="origem" required>
             <label for="destino">Destino:</label>
@@ -66,13 +43,8 @@
             <button type="button" id="calcular-frete">Calcular Frete</button>
         </form>
 
-        <!-- Relatório do cálculo -->
         <div id="relatorio"></div>
-
-        <!-- Botão para gerar o PDF (inicialmente invisível) -->
         <button id="gerar-pdf" style="display: none;">Gerar PDF</button>
-
-        <!-- Indicador de loading enquanto o PDF está sendo gerado -->
         <div id="loading-pdf" style="display: none;">Organizando PDF...</div>
     </div>
 
@@ -86,53 +58,6 @@
     <script src="botaocalcular.js"></script>
     <script src="checkpdf.js"></script>
     <script src="pdf.js"></script>
-
-    <!-- Script do gráfico -->
-    <script>
-        const graficoContainer = document.getElementById("grafico-pizza-container");
-        const detalhes = document.getElementById("lista-detalhes");
-
-        let chart;
-
-        function mostrarGrafico(lucro, despesas, detalhesDespesas) {
-            graficoContainer.style.display = "block";
-
-            const ctx = document.getElementById("graficoPizza").getContext("2d");
-
-            if (chart) chart.destroy();
-
-            chart = new Chart(ctx, {
-                type: "pie",
-                data: {
-                    labels: ["Lucro", "Despesas"],
-                    datasets: [{
-                        data: [lucro, despesas],
-                        backgroundColor: ["#2ecc71", "#e74c3c"]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    onClick: function (e, elements) {
-                        if (elements.length > 0) {
-                            const index = elements[0].index;
-                            if (index === 0) {
-                                detalhes.innerHTML = "<strong>Lucro Líquido</strong><br>R$ " + lucro.toFixed(2);
-                            } else if (index === 1) {
-                                detalhes.innerHTML = "<strong>Despesas Detalhadas</strong><br>" + detalhesDespesas.map(d => `• ${d.nome}: R$ ${d.valor.toFixed(2)}`).join("<br>");
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Hook para receber dados após cálculo
-        document.addEventListener("graficoAtualizar", function (e) {
-            const { lucroLiquido, despesasDetalhadas } = e.detail;
-
-            const totalDespesas = despesasDetalhadas.reduce((acc, item) => acc + item.valor, 0);
-            mostrarGrafico(lucroLiquido, totalDespesas, despesasDetalhadas);
-        });
-    </script>
+    <script src="grafico-controlador.js"></script> <!-- JS do gráfico separado -->
 </body>
 </html>
