@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   function gerarGraficoPizza(lucroLiquido, despesas) {
+    const graficoContainer = document.getElementById('grafico-pizza');
     const ctx = document.getElementById('graficoPizza').getContext('2d');
 
     if (window.graficoPizzaInstancia) {
@@ -35,16 +36,41 @@ document.addEventListener("DOMContentLoaded", function () {
           if (elements.length > 0) {
             const index = elements[0].index;
             if (index === 0) {
-              alert("💸 Despesas:\n\n- Seguro da carga\n- Desembarque\n- Vale pedágio (PanCard)\n- Cadastro (Buonny)\n- Combustível\n- Pedágio\n- ICMS\n- Taxa Federal\n- Custos adicionais\n- Taxa por peso");
+              exibirDetalhes("💸 Despesas", [
+                "Seguro da carga",
+                "Desembarque",
+                "Vale pedágio (PanCard)",
+                "Cadastro (Buonny)",
+                "Combustível",
+                "Pedágio",
+                "ICMS",
+                "Taxa Federal",
+                "Custos adicionais",
+                "Taxa por peso"
+              ]);
             } else if (index === 1) {
-              alert("💰 Lucro Líquido:\n\n- Valor que sobra após todas as despesas e impostos.");
+              exibirDetalhes("💰 Lucro Líquido", [
+                "Valor que sobra após todas as despesas e impostos."
+              ]);
             }
           }
         }
       }
     });
 
-    document.getElementById('container-grafico').style.display = 'block';
+    graficoContainer.style.display = 'block';
+  }
+
+  function exibirDetalhes(titulo, detalhes) {
+    const container = document.getElementById('grafico-pizza-container');
+    const listaDetalhes = document.getElementById('lista-detalhes');
+    
+    listaDetalhes.innerHTML = `<h3>${titulo}</h3><ul>${detalhes.map(item => `<li>${item}</li>`).join('')}</ul><button onclick='fecharDetalhes()'>Fechar</button>`;
+    container.classList.add('expandido');
+  }
+
+  function fecharDetalhes() {
+    document.getElementById('grafico-pizza-container').classList.remove('expandido');
   }
 
   document.addEventListener("graficoAtualizar", (event) => {
