@@ -46,7 +46,7 @@ function gerarGraficoPizza(lucroLiquido, despesas) {
     });
 
     // Exibe o container do gráfico
-    document.getElementById('container-grafico').style.display = 'block';
+    document.getElementById('grafico-pizza-container').style.display = 'block';
 }
 
 // OUVE o evento personalizado que vem do botaocalcular.js
